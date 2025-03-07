@@ -1,0 +1,8 @@
+names:
+- block-people
+- body
+nc: 2
+path: C:\Users\maxon\Desktop\StalCraft Detection\data
+test: images/test
+train: images/train
+val: images/val

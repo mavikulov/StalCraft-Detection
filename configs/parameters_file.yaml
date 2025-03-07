@@ -1,0 +1,22 @@
+data:
+  json_path: "data/train/_annotations.coco.json"
+  images_dir: "data/images"
+  labels_dir: "data/labels"
+  yaml_path: "data/dataset.yaml"
+
+training:
+  epochs: 50
+  batch: 16
+  imgsz: 640
+  project: "my_training"
+
+inference:
+  model_path: ""
+  image_paths: "data/test"
+  conf: 0.5
+
+pretrained_models:
+  - yolov8s.pt
+  - yolov8m.pt
+  - yolov8l.pt
+  - yolov8x.pt

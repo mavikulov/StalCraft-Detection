@@ -2,9 +2,10 @@ import os
 import time
 import yaml
 import torch
+import shutil
 import argparse
 from ultralytics import YOLO
-from utils import convert_coco_to_yolo, create_yaml_from_coco
+from utils import convert_coco_to_yolo, create_yaml_from_coco, delete_pt_files
 
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -15,9 +16,6 @@ def train_yolo(config):
         json_path = os.path.join(config['data']['images_dir'], split, '_annotations.coco.json')
         images_dir = os.path.join(config["data"]["images_dir"], split)
         labels_dir = os.path.join(config["data"]["labels_dir"], split)
-        print(f"json_path = {json_path}")
-        print(f"images_dir = {images_dir}")
-        print(f"labels_dir = {labels_dir}")
         convert_coco_to_yolo(json_path, images_dir, labels_dir)
         
     create_yaml_from_coco(
@@ -25,10 +23,17 @@ def train_yolo(config):
         output_yaml_path=config["data"]["yaml_path"],
         data_path=os.path.abspath(os.path.dirname(config["data"]["images_dir"]))
     )
-    
+
     for model_name in config['pretrained_models']:
+        name = model_name.split(".")[0]
+        model_dir = os.path.join(config['training']['project'], name)
+        if os.path.exists(model_dir):
+            shutil.rmtree(model_dir)
+
         print(f"Training model: {model_name}")
+        config['training']['name'] = name
         model = YOLO(model_name)
+
         results = model.train(
             data=config['data']['yaml_path'],
             epochs=config['training']['epochs'],
@@ -36,7 +41,7 @@ def train_yolo(config):
             imgsz=config['training']['imgsz'],
             device=device,
             project=config['training']['project'],
-            name=f"{model_name.split('.')[0]}_{time.strftime('%Y-%m-%d %H-%M-%S')}",
+            name=name,
             verbose=True
         )
         
@@ -48,12 +53,9 @@ def train_yolo(config):
             device=device
         )
         
-        print(f"Model: {model_name}")
-        print(f"mAP@0.5: {metrics.box.map}")
-        print(f"mAP@0.5:0.95: {metrics.box.map50_95}")
-        print(f"Precision: {metrics.box.precision}")
-        print(f"Recall: {metrics.box.recall}")
-        print("-" * 50)
+        print(f"Validationing Model: {model_name}")
+        weights_path = os.path.join(config['training']['project'], name, "weights", "best.pt")
+        print(f"Weights are saved in: {weights_path}")
         
         
 if __name__ == "__main__":
@@ -64,6 +66,8 @@ if __name__ == "__main__":
     with open(args.config, "r") as f:
         config = yaml.safe_load(f)
     
-    print(os.path.abspath(os.path.dirname(config["data"]["images_dir"]))) 
     train_yolo(config)
-        
+
+    script_path = os.path.abspath(__file__)
+    script_dir = os.path.dirname(script_path)
+    delete_pt_files(script_dir)

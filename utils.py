@@ -1,6 +1,7 @@
 import os
 import yaml
 import json
+import glob
 import argparse
 from tqdm import tqdm
 
@@ -8,6 +9,16 @@ from tqdm import tqdm
 def load_annotations(json_path):
     with open(json_path, "r") as f:
         return json.load(f)
+
+
+def delete_pt_files(directory):
+    pt_files = glob.glob(os.path.join(directory, "*.pt"))
+    for file in pt_files:
+        try:
+            os.remove(file)
+            print(f"Removed file: {file}")
+        except Exception as e:
+            print(f"Error during removing file {file}: {e}")
 
 
 def convert_coco_to_yolo(json_path, images_dir, labels_dir):
@@ -54,24 +65,4 @@ def create_yaml_from_coco(json_path, output_yaml_path, data_path):
     
     with open(output_yaml_path, "w") as f:
         yaml.dump(yaml_data, f, default_flow_style=False)
-
-
-"""if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--config", type=str, default="configs/parameters_file.yaml", help="Path to YAML-file with configuration")
-    args = parser.parse_args()
-    
-    with open(args.config, 'r') as f:
-        config = yaml.safe_load(f)
-    print(config)
-    
-    json_path = os.path.join(config["data"]["images_dir"], 'train', "_annotations.coco.json")
-    images_dir = os.path.join(config["data"]["images_dir"], 'train')
-    labels_dir = os.path.join(config["data"]["labels_dir"], 'train')
-    
-    print(f"json_path = {json_path}")
-    print(f"images_dir = {images_dir}")
-    print(f"labels_dir = {labels_dir}")
-    
-    convert_coco_to_yolo(json_path, images_dir, labels_dir)"""
     

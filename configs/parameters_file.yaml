@@ -8,11 +8,12 @@ training:
   epochs: 50
   batch: 16
   imgsz: 640
-  project: "my_training"
+  project: "my_training/models"
+  name: ""
 
 inference:
-  model_path: ""
-  image_paths: "data/test"
+  image_paths:
+    - "data/images/test/Screenshot-2023-01-19-091442_png.rf.6b7c7a0777c09b47d9bd08bc0e5cde2d.jpg"
   conf: 0.5
 
 pretrained_models:

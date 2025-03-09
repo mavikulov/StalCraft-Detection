@@ -12,7 +12,7 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
 def train_yolo(config):
-    for split in ['train', 'val', 'test']:
+    for split in ['train', 'valid', 'test']:
         json_path = os.path.join(config['data']['images_dir'], split, '_annotations.coco.json')
         images_dir = os.path.join(config["data"]["images_dir"], split)
         labels_dir = os.path.join(config["data"]["labels_dir"], split)

@@ -1,8 +1,0 @@
-names:
-- block-people
-- body
-nc: 2
-path: /home/maxim/PycharmProjects/StalCraft-Detection/data
-test: images/test
-train: images/train
-val: images/val

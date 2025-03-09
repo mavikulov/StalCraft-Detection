@@ -42,8 +42,8 @@ if __name__ == "__main__":
         "--model",
         type=str, 
         required=True, 
-        choices=["yolov8s", "yolov8m", "yolov8l", "yolov8x"],
-        help="Model name (choose from: yolov8s, yolov8m, yolov8l, yolov8x)"
+        choices=["yolov8s", "yolov8m", "yolov8l"],
+        help="Model name (choose from: yolov8s, yolov8m, yolov8l)"
     )
 
     args = parser.parse_args()

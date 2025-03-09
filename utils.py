@@ -73,7 +73,7 @@ def create_yaml_from_coco(json_path, output_yaml_path, data_path):
     yaml_data = {
         "path": data_path,  
         "train": "images/train",  
-        "val": "images/val",  
+        "val": "images/valid",  
         "test": "images/test",  
         "nc": nc,  
         "names": names
@@ -81,4 +81,3 @@ def create_yaml_from_coco(json_path, output_yaml_path, data_path):
     
     with open(output_yaml_path, "w") as f:
         yaml.dump(yaml_data, f, default_flow_style=False)
-    

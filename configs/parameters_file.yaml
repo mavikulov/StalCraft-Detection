@@ -20,4 +20,3 @@ pretrained_models:
   - yolov8s.pt
   - yolov8m.pt
   - yolov8l.pt
-  - yolov8x.pt

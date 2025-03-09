@@ -2,13 +2,29 @@ import os
 import yaml
 import json
 import glob
-import argparse
 from tqdm import tqdm
 
 
 def load_annotations(json_path):
     with open(json_path, "r") as f:
         return json.load(f)
+
+
+def load_model(config, model_name):
+    pretrained_weights_path = os.path.join(os.getcwd(), "pretrained_models", f"{model_name}.pt")
+    trained_weights_path = os.path.join(config["training"]["project"], model_name, "weights", "best.pt")
+
+    if not os.path.exists(trained_weights_path):
+        weights_path = pretrained_weights_path
+        print(f"Used pretrained weights for {model_name}")
+    else:
+        weights_path = trained_weights_path
+        print(f"Used pretrained weights for {model_name}")
+    print(f"Extracting weights from {weights_path}")
+
+    if not os.path.exists(weights_path):
+        raise FileNotFoundError(f"Model was not found in path: {weights_path}")
+    return weights_path
 
 
 def delete_pt_files(directory):

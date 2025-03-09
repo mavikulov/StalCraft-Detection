@@ -4,3 +4,4 @@ torchvision
 torchaudio
 opencv-python
 ultralytics
+gradio

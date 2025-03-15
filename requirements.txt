@@ -6,3 +6,4 @@ opencv-python
 ultralytics
 gradio
 roboflow
+huggingface_hub

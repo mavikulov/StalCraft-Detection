@@ -11,15 +11,22 @@ def load_annotations(json_path):
 
 
 def load_model(config, model_name):
-    pretrained_weights_path = os.path.join(os.getcwd(), "pretrained_models", f"{model_name}.pt")
     trained_weights_path = os.path.join(config["training"]["project"], model_name, "weights", "best.pt")
-
     if not os.path.exists(trained_weights_path):
-        weights_path = pretrained_weights_path
-        print(f"Used pretrained weights for {model_name}")
-    else:
-        weights_path = trained_weights_path
-        print(f"Used pretrained weights for {model_name}")
+        from huggingface_hub import snapshot_download
+
+        repo_id = 'mavikulov/yolo-model'
+        token = "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"
+        local_folder = snapshot_download(
+            repo_id=repo_id,
+            token=token,
+            local_dir=config["training"]["project"]
+        )
+
+        print(f'Files were downloaded in {local_folder}')
+
+    weights_path = trained_weights_path
+
     print(f"Extracting weights from {weights_path}")
 
     if not os.path.exists(weights_path):

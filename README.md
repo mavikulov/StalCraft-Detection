@@ -31,10 +31,10 @@
 ``` pip3 install -r requirements.txt```
 
 2. Скачать датасет. Для этого необходимо сделать следующее:
-	2.1. Зарегистрироваться на сайте [Roboflow](https://universe.roboflow.com/)
-	2.2. Перейти по ссылке для скачивания датасета [Dataset](https://universe.roboflow.com/michael-gorrg/stalcraft-flcil/dataset/9/download), выбрать Download Dataset->Show download code
-	2.3. Скопировать API-ключ из поля api_key: `rf = Roboflow(api_key="████████████████")`
-	2.4. Выполнить скрипт: `python3 download.py` и вставить в необходимое поле скопированный ключ.
+	* Зарегистрироваться на сайте [Roboflow](https://universe.roboflow.com/)
+	* Перейти по ссылке для скачивания датасета [Dataset](https://universe.roboflow.com/michael-gorrg/stalcraft-flcil/dataset/9/download), выбрать Download Dataset->Show download code
+	* Скопировать API-ключ из поля api_key: `rf = Roboflow(api_key="████████████████")`
+	* Выполнить скрипт: `python3 download.py` и вставить в необходимое поле скопированный ключ.
 Данные будут распологаться в директории data.
 3.  Для дообучения новыми данными всех используемых YOLO-моделей, необходимо выполнить следующее:
 ```python3 train.py --config configs/parameters_file.yaml```
@@ -62,7 +62,7 @@ data:
 
 training:
 	epochs: 50 # Количество эпох
-	batch: 16 # Размер батчка
+	batch: 8 # Размер батчка
 	imgsz: 640 # Размер изображения
 	project: "my_training/models" # Путь до родительской директории с результатами обучения
 	name: "" # Имя директории с результатами обучения
